@@ -10,14 +10,18 @@ import java.util.Map;
 public class CommandHandler extends ListenerAdapter {
     public static final Map<String, Command> commands = new HashMap<>();
 
-    public static void registerCommand(Command command) {
+    public static void register(Command command) {
         commands.put(command.getCommandData().getName(), command);
     }
 
-    public static void registerCommands(Command... commands) {
+    public static void register(Command... commands) {
         for (Command command : commands) {
-            registerCommand(command);
+            register(command);
         }
+    }
+
+    public static void remove(String commandName) {
+        commands.remove(commandName);
     }
 
     public static void handle(SlashCommandEvent event) {

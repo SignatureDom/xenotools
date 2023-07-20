@@ -27,7 +27,7 @@ public class XenoTools {
         builder.setBulkDeleteSplittingEnabled(false);
 
         // Register commands
-        CommandHandler.registerCommands(new Stats(), new IPLookup(), new Ping());
+        CommandHandler.register(new Stats(), new IPLookup(), new Ping());
 
         // Register events
         builder.addEventListeners(new Ready(), new SlashCommand());
