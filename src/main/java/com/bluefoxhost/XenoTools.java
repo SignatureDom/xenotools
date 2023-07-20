@@ -2,6 +2,7 @@ package com.bluefoxhost;
 
 import com.bluefoxhost.commands.IPLookup;
 import com.bluefoxhost.commands.Ping;
+import com.bluefoxhost.commands.ServerInfo;
 import com.bluefoxhost.commands.Stats;
 import com.bluefoxhost.events.Ready;
 import com.bluefoxhost.events.SlashCommand;
@@ -9,8 +10,6 @@ import com.bluefoxhost.handlers.CommandHandler;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.interactions.commands.Command;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import javax.security.auth.login.LoginException;
@@ -27,7 +26,7 @@ public class XenoTools {
         builder.setBulkDeleteSplittingEnabled(false);
 
         // Register commands
-        CommandHandler.register(new Stats(), new IPLookup(), new Ping());
+        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo());
 
         // Register events
         builder.addEventListeners(new Ready(), new SlashCommand());
@@ -39,6 +38,7 @@ public class XenoTools {
         jda.upsertCommand(new IPLookup().getCommandData()).queue();
         jda.upsertCommand(new Stats().getCommandData()).queue();
         jda.upsertCommand(new Ping().getCommandData()).queue();
+        jda.upsertCommand(new ServerInfo().getCommandData()).queue();
 
     }
 }
