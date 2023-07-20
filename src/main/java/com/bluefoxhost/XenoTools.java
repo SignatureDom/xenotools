@@ -4,6 +4,7 @@ import com.bluefoxhost.commands.IPLookup;
 import com.bluefoxhost.commands.Ping;
 import com.bluefoxhost.commands.Stats;
 import com.bluefoxhost.events.Ready;
+import com.bluefoxhost.events.SlashCommand;
 import com.bluefoxhost.handlers.CommandHandler;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDABuilder;
@@ -19,23 +20,19 @@ public class XenoTools {
         Dotenv dotenv = Dotenv.load();
         String token = dotenv.get("DISCORD_TOKEN");
 
-        if (token == null) {
-            throw new RuntimeException("Missing DISCORD_TOKEN environment variable");
-        }
+        if (token == null) throw new RuntimeException("Missing DISCORD_TOKEN environment variable");
 
         JDABuilder builder = JDABuilder.createDefault(token);
-
         builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
         builder.setBulkDeleteSplittingEnabled(false);
 
-        // Create CommandHandler and register commands
-        CommandHandler commandHandler = new CommandHandler();
-        commandHandler.registerCommand(new Stats());
-        commandHandler.registerCommand(new IPLookup());
-        commandHandler.registerCommand(new Ping());
+        // Register commands
+        CommandHandler.registerCommands(new Stats(), new IPLookup(), new Ping());
 
-        builder.addEventListeners(new Ready(), commandHandler);
+        // Register events
+        builder.addEventListeners(new Ready(), new SlashCommand());
 
+        // Build JDA instance
         JDA jda = builder.build().awaitReady();
 
         // Update list of slash commands

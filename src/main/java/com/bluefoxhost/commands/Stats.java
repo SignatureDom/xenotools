@@ -2,7 +2,6 @@ package com.bluefoxhost.commands;
 
 import com.bluefoxhost.util.CustomEmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
 import java.lang.management.ManagementFactory;

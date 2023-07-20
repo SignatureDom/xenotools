@@ -20,7 +20,6 @@ public class IPLookup extends Command {
                 .addOption(OptionType.STRING, "ip", "The IP address to lookup", true));
     }
 
-
     @Override
     public void execute(SlashCommandEvent event) {
         String ip = event.getOption("ip").getAsString();

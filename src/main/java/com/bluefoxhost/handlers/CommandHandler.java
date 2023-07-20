@@ -8,16 +8,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommandHandler extends ListenerAdapter {
-    private final Map<String, Command> commandMap = new HashMap<>();
+    public static final Map<String, Command> commands = new HashMap<>();
 
-    public void registerCommand(Command command) {
-        commandMap.put(command.getCommandData().getName(), command);
+    public static void registerCommand(Command command) {
+        commands.put(command.getCommandData().getName(), command);
     }
 
-    @Override
-    public void onSlashCommand(SlashCommandEvent event) {
+    public static void registerCommands(Command... commands) {
+        for (Command command : commands) {
+            registerCommand(command);
+        }
+    }
+
+    public static void handle(SlashCommandEvent event) {
         String commandName = event.getName();
-        Command command = commandMap.get(commandName);
+        Command command = commands.get(commandName);
         if (command != null) {
             command.execute(event);
         }
