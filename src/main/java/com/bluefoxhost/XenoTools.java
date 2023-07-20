@@ -1,9 +1,6 @@
 package com.bluefoxhost;
 
-import com.bluefoxhost.commands.IPLookup;
-import com.bluefoxhost.commands.Ping;
-import com.bluefoxhost.commands.ServerInfo;
-import com.bluefoxhost.commands.Stats;
+import com.bluefoxhost.commands.*;
 import com.bluefoxhost.events.Ready;
 import com.bluefoxhost.events.SlashCommand;
 import com.bluefoxhost.handlers.CommandHandler;
@@ -26,7 +23,7 @@ public class XenoTools {
         builder.setBulkDeleteSplittingEnabled(false);
 
         // Register commands
-        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo());
+        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo(), new Purge());
 
         // Register events
         builder.addEventListeners(new Ready(), new SlashCommand());
@@ -39,6 +36,7 @@ public class XenoTools {
         jda.upsertCommand(new Stats().getCommandData()).queue();
         jda.upsertCommand(new Ping().getCommandData()).queue();
         jda.upsertCommand(new ServerInfo().getCommandData()).queue();
+        jda.upsertCommand(new Purge().getCommandData()).queue();
 
     }
 }
