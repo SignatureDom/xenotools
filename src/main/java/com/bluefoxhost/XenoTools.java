@@ -1,6 +1,7 @@
 package com.bluefoxhost;
 
 import com.bluefoxhost.commands.IPLookup;
+import com.bluefoxhost.commands.Ping;
 import com.bluefoxhost.commands.Stats;
 import com.bluefoxhost.events.Ready;
 import com.bluefoxhost.handlers.CommandHandler;
@@ -31,6 +32,7 @@ public class XenoTools {
         CommandHandler commandHandler = new CommandHandler();
         commandHandler.registerCommand(new Stats());
         commandHandler.registerCommand(new IPLookup());
+        commandHandler.registerCommand(new Ping());
 
         builder.addEventListeners(new Ready(), commandHandler);
 
@@ -39,6 +41,7 @@ public class XenoTools {
         // Update list of slash commands
         jda.upsertCommand(new IPLookup().getCommandData()).queue();
         jda.upsertCommand(new Stats().getCommandData()).queue();
+        jda.upsertCommand(new Ping().getCommandData()).queue();
 
     }
 }
