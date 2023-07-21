@@ -1,5 +1,9 @@
 .env
 
+# Ignore everything in logs directory except .gitkeep
+/logs/*
+!/logs/.gitkeep
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
