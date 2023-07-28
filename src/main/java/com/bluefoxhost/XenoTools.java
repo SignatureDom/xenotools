@@ -23,7 +23,7 @@ public class XenoTools {
         builder.setBulkDeleteSplittingEnabled(false);
 
         // Register commands
-        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo(), new Purge());
+        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo(), new Purge(), new UserInfo());
 
         // Register events
         builder.addEventListeners(new Ready(), new SlashCommand());
@@ -37,6 +37,7 @@ public class XenoTools {
         jda.upsertCommand(new Ping().getCommandData()).queue();
         jda.upsertCommand(new ServerInfo().getCommandData()).queue();
         jda.upsertCommand(new Purge().getCommandData()).queue();
+        jda.upsertCommand(new UserInfo().getCommandData()).queue();
 
     }
 }
