@@ -32,10 +32,8 @@ public class StatusHandler {
     }
 
     public static void updateStatus(boolean force) {
-        System.out.println("Updating status function called");
         synchronized (lock) {
             if (force || guildCountChange.get() != 0) {
-                System.out.println("Updating status");
                 int currentGuildCount = jdaInstance.getGuilds().size();
                 jdaInstance.getPresence().setActivity(Activity.watching(currentGuildCount + " guilds"));
                 guildCountChange.set(0);
