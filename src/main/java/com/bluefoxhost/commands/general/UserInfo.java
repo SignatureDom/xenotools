@@ -1,5 +1,6 @@
-package com.bluefoxhost.commands;
+package com.bluefoxhost.commands.general;
 
+import com.bluefoxhost.commands.Command;
 import com.bluefoxhost.util.CustomEmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
