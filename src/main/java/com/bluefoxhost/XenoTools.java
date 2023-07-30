@@ -1,9 +1,12 @@
 package com.bluefoxhost;
 
 import com.bluefoxhost.commands.*;
+import com.bluefoxhost.events.GuildJoin;
+import com.bluefoxhost.events.GuildLeave;
 import com.bluefoxhost.events.Ready;
 import com.bluefoxhost.events.SlashCommand;
 import com.bluefoxhost.handlers.CommandHandler;
+import com.bluefoxhost.handlers.StatusHandler;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.JDA;
@@ -26,10 +29,12 @@ public class XenoTools {
         CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo(), new Purge(), new UserInfo());
 
         // Register events
-        builder.addEventListeners(new Ready(), new SlashCommand());
+        builder.addEventListeners(new Ready(), new SlashCommand(), new GuildJoin(), new GuildLeave());
 
         // Build JDA instance
         JDA jda = builder.build().awaitReady();
+
+        StatusHandler.initialize(jda);
 
         // Update list of slash commands
         jda.upsertCommand(new IPLookup().getCommandData()).queue();
