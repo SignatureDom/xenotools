@@ -1,10 +1,12 @@
 package com.bluefoxhost.handlers;
 
 import java.sql.*;
+import java.util.HashMap;
 
 public class DatabaseHandler {
     private static DatabaseHandler INSTANCE;
     private Connection connection;
+    private final HashMap<String, Boolean> bannedGuilds = new HashMap<>();
 
     public DatabaseHandler(String url, String username, String password) throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -20,6 +22,7 @@ public class DatabaseHandler {
         INSTANCE = new DatabaseHandler(url, username, password);
     }
 
+
     public void createGuildsTable() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS guilds (" +
                 "guild_id VARCHAR(255) NOT NULL PRIMARY KEY," +
@@ -31,6 +34,22 @@ public class DatabaseHandler {
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(sql);
         }
+    }
+
+    public HashMap<String, Boolean> getBannedGuilds() {
+        return bannedGuilds;
+    }
+
+    public void cacheBannedGuilds() throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("SELECT guild_id FROM guilds WHERE banned = TRUE");
+        ResultSet rs = stmt.executeQuery();
+        while(rs.next()){
+            bannedGuilds.put(rs.getString("guild_id"), true);
+        }
+    }
+
+    public boolean isGuildBanned(String guildId) {
+        return bannedGuilds.containsKey(guildId);
     }
 
     public boolean guildExists(String guildId) throws SQLException {

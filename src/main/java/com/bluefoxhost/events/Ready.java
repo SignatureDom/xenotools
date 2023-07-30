@@ -18,6 +18,12 @@ public class Ready extends ListenerAdapter {
         DatabaseHandler database = DatabaseHandler.getInstance();
 
         for (Guild guild : event.getJDA().getGuilds()) {
+            // Leave guild if banned
+            if (database.isGuildBanned(guild.getId())) {
+                guild.leave().queue();
+                continue;
+            }
+            // Ensure guild exists in database
             try {
                 if (!database.getInstance().guildExists(guild.getId())) {
                     database.getInstance().addGuild(guild.getId());

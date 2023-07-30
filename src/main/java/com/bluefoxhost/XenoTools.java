@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import javax.security.auth.login.LoginException;
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 
 public class XenoTools {
@@ -33,6 +32,9 @@ public class XenoTools {
 
         // Create tables
         DatabaseHandler.getInstance().createGuildsTable();
+
+        // Cache banned guilds
+        DatabaseHandler.getInstance().cacheBannedGuilds();
 
         JDABuilder builder = JDABuilder.createDefault(token);
         builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);

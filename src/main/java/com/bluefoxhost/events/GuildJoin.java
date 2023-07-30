@@ -42,6 +42,11 @@ public class GuildJoin extends ListenerAdapter {
             e.printStackTrace();
         }
 
+        // Check if guild is banned
+        if (instance.isGuildBanned(event.getGuild().getId())) {
+            event.getGuild().leave().queue();
+        }
+
 
     }
 }
