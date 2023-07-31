@@ -42,6 +42,11 @@ public class CustomEmbedBuilder extends EmbedBuilder {
         return this;
     }
 
+    public CustomEmbedBuilder setImage(String url) {
+        super.setImage(url);
+        return this;
+    }
+
     public CustomEmbedBuilder setColor(Color color) {
         super.setColor(color);
         return this;

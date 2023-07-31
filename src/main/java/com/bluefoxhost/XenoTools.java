@@ -41,7 +41,7 @@ public class XenoTools {
         builder.setBulkDeleteSplittingEnabled(false);
 
         // Register commands
-        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo(), new Purge(), new UserInfo(), new Help());
+        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo(), new Purge(), new UserInfo(), new Help(), new MCServer());
 
         // Register events
         builder.addEventListeners(new Ready(), new SlashCommand(), new GuildJoin(), new GuildLeave());
@@ -60,6 +60,7 @@ public class XenoTools {
         jda.upsertCommand(new Purge().getCommandData()).queue();
         jda.upsertCommand(new UserInfo().getCommandData()).queue();
         jda.upsertCommand(new Help().getCommandData()).queue();
+        jda.upsertCommand(new MCServer().getCommandData()).queue();
 
     }
 }
