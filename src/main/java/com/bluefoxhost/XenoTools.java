@@ -1,5 +1,6 @@
 package com.bluefoxhost;
 
+import com.bluefoxhost.commands.admin.Premium;
 import com.bluefoxhost.commands.admin.Purge;
 import com.bluefoxhost.commands.general.*;
 import com.bluefoxhost.events.GuildJoin;
@@ -41,7 +42,7 @@ public class XenoTools {
         builder.setBulkDeleteSplittingEnabled(false);
 
         // Register commands
-        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo(), new Purge(), new UserInfo(), new Help(), new MCServer());
+        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo(), new Purge(), new UserInfo(), new Help(), new MCServer(), new Premium());
 
         // Register events
         builder.addEventListeners(new Ready(), new SlashCommand(), new GuildJoin(), new GuildLeave());
@@ -61,6 +62,7 @@ public class XenoTools {
         jda.upsertCommand(new UserInfo().getCommandData()).queue();
         jda.upsertCommand(new Help().getCommandData()).queue();
         jda.upsertCommand(new MCServer().getCommandData()).queue();
+        jda.upsertCommand(new Premium().getCommandData()).queue();
 
     }
 }

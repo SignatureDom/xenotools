@@ -52,6 +52,23 @@ public class DatabaseHandler {
         return bannedGuilds.containsKey(guildId);
     }
 
+    public boolean isGuildPremium(String guildId) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("SELECT premium FROM guilds WHERE guild_id = ?");
+        stmt.setString(1, guildId);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getBoolean("premium");
+        }
+        return false;
+    }
+
+    public void banGuild(String guildId) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("UPDATE guilds SET banned = TRUE WHERE guild_id = ?");
+        stmt.setString(1, guildId);
+        stmt.executeUpdate();
+        bannedGuilds.put(guildId, true);
+    }
+
     public boolean guildExists(String guildId) throws SQLException {
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM guilds WHERE guild_id = ?");
         stmt.setString(1, guildId);
