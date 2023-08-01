@@ -2,6 +2,7 @@ package com.bluefoxhost.commands.general;
 
 import com.bluefoxhost.commands.Command;
 import com.bluefoxhost.util.CustomEmbedBuilder;
+import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -13,8 +14,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class IPLookup extends Command {
-    private static final String IPINFO_TOKEN = "ce5a3bae88bd6e";
-    private static final OkHttpClient httpClient = new OkHttpClient();
+    Dotenv dotenv = Dotenv.load();
+    private String IPINFO_TOKEN = dotenv.get("IPINFO_TOKEN");;
+    private OkHttpClient httpClient = new OkHttpClient();
 
     public IPLookup() {
         super(new CommandData("iplookup", "Lookup an IP address")
@@ -24,6 +26,8 @@ public class IPLookup extends Command {
     @Override
     public void execute(SlashCommandEvent event) {
         String ip = event.getOption("ip").getAsString();
+
+        event.deferReply().queue();
 
         String json = fetchIPInfo(ip);
         if (json != null) {
@@ -39,7 +43,7 @@ public class IPLookup extends Command {
             boolean anycast = jsonObject.optBoolean("anycast");
 
             CustomEmbedBuilder embedBuilder = new CustomEmbedBuilder()
-                    .setTitle("IP Lookup Result")
+                    .setTitle("IP Lookup")
                     .setDescription(
                             "**IP**: " + ip + "\n" +
                             "**Hostname**: " + hostname + "\n" +
@@ -52,9 +56,9 @@ public class IPLookup extends Command {
                             "**Postal Code**: " + postal + "\n" +
                             "**Timezone**: " + timezone + "\n"
                     );
-            event.replyEmbeds(embedBuilder.build()).queue();
+            event.getHook().editOriginalEmbeds(embedBuilder.build()).queue();
         } else {
-            event.reply("Failed to fetch information for IP: " + ip).queue();
+            event.getHook().editOriginal("Failed to fetch information for IP: " + ip).queue();
         }
     }
 
