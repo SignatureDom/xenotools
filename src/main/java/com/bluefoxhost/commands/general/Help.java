@@ -15,7 +15,7 @@ public class Help extends Command {
         CustomEmbedBuilder embedBuilder = new CustomEmbedBuilder()
                 .setTitle("Help")
                 .setField("General", "`help`, `ping`, `serverinfo`, `userinfo`, `stats`, `iplookup`", false)
-                .setField("Admin", "`purge`, `premium`", false);
+                .setField("Admin", "`purge`, `premium`, `counter`", false);
 
         event.replyEmbeds(embedBuilder.build()).queue();
     }
