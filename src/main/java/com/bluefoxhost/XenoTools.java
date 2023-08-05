@@ -1,5 +1,6 @@
 package com.bluefoxhost;
 
+import com.bluefoxhost.commands.admin.Counter;
 import com.bluefoxhost.commands.admin.Premium;
 import com.bluefoxhost.commands.admin.Purge;
 import com.bluefoxhost.commands.general.*;
@@ -8,6 +9,7 @@ import com.bluefoxhost.events.GuildLeave;
 import com.bluefoxhost.events.Ready;
 import com.bluefoxhost.events.SlashCommand;
 import com.bluefoxhost.handlers.CommandHandler;
+import com.bluefoxhost.handlers.CounterHandler;
 import com.bluefoxhost.handlers.StatusHandler;
 import com.bluefoxhost.handlers.DatabaseHandler;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -33,6 +35,7 @@ public class XenoTools {
 
         // Create tables
         DatabaseHandler.getInstance().createGuildsTable();
+        DatabaseHandler.getInstance().createCountersTable();
 
         // Cache banned guilds
         DatabaseHandler.getInstance().cacheBannedGuilds();
@@ -42,7 +45,7 @@ public class XenoTools {
         builder.setBulkDeleteSplittingEnabled(false);
 
         // Register commands
-        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo(), new Purge(), new UserInfo(), new Help(), new MCServer(), new Premium());
+        CommandHandler.register(new Stats(), new IPLookup(), new Ping(), new ServerInfo(), new Purge(), new UserInfo(), new Help(), new MCServer(), new Premium(), new Counter());
 
         // Register events
         builder.addEventListeners(new Ready(), new SlashCommand(), new GuildJoin(), new GuildLeave());
@@ -52,6 +55,9 @@ public class XenoTools {
 
         // Initialize status handler
         StatusHandler.initialize(jda);
+
+        // Initialize counter handler
+        CounterHandler.initialize(jda);
 
         // Update list of slash commands
         jda.upsertCommand(new IPLookup().getCommandData()).queue();
@@ -63,6 +69,7 @@ public class XenoTools {
         jda.upsertCommand(new Help().getCommandData()).queue();
         jda.upsertCommand(new MCServer().getCommandData()).queue();
         jda.upsertCommand(new Premium().getCommandData()).queue();
+        jda.upsertCommand(new Counter().getCommandData()).queue();
 
     }
 }

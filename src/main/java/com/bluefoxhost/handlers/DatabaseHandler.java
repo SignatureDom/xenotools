@@ -1,7 +1,11 @@
 package com.bluefoxhost.handlers;
 
+import com.bluefoxhost.models.Counter;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class DatabaseHandler {
     private static DatabaseHandler INSTANCE;
@@ -34,6 +38,56 @@ public class DatabaseHandler {
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(sql);
         }
+    }
+
+    public void createCountersTable() throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS counters (" +
+                "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
+                "guild_id VARCHAR(255) NOT NULL," +
+                "type VARCHAR(255) NOT NULL," +
+                "channel_id VARCHAR(255) NOT NULL," +
+                "FOREIGN KEY (guild_id) REFERENCES guilds(guild_id)" +
+                ")";
+
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute(sql);
+        }
+    }
+
+    public void createCounter(String guildId, String type, String channelId) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO counters (guild_id, type, channel_id) VALUES (?, ?, ?)");
+        stmt.setString(1, guildId);
+        stmt.setString(2, type);
+        stmt.setString(3, channelId);
+        stmt.executeUpdate();
+    }
+
+    public void removeCounter(String guildId, String channelId) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM counters WHERE guild_id = ? AND channel_id = ?");
+        stmt.setString(1, guildId);
+        stmt.setString(2, channelId);
+        stmt.executeUpdate();
+    }
+
+    public List<Counter> getCounters(String guildId) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("SELECT type, channel_id FROM counters WHERE guild_id = ?");
+        stmt.setString(1, guildId);
+        ResultSet rs = stmt.executeQuery();
+        List<Counter> counters = new ArrayList<>();
+        while(rs.next()) {
+            counters.add(new Counter(rs.getString("type"), rs.getString("channel_id"), rs.getString("guild_id")));
+        }
+        return counters;
+    }
+
+    public List<Counter> getAllCounters() throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("SELECT guild_id, type, channel_id FROM counters");
+        ResultSet rs = stmt.executeQuery();
+        List<Counter> counters = new ArrayList<>();
+        while(rs.next()) {
+            counters.add(new Counter(rs.getString("type"), rs.getString("channel_id"), rs.getString("guild_id")));
+        }
+        return counters;
     }
 
     public HashMap<String, Boolean> getBannedGuilds() {
